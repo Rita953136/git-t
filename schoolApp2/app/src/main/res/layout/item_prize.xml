@@ -3,22 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="12dp">
+
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:contentDescription="刪除"
+        android:src="@android:drawable/ic_menu_delete" />
 
     <TextView
         android:id="@+id/textPrize"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="批次編輯"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 
-    <ImageButton
-        android:id="@+id/btnDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_delete"
-        android:contentDescription="刪除"
-        android:background="?attr/selectableItemBackgroundBorderless" />
 </LinearLayout>

@@ -59,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="新增"
+                android:backgroundTint="#222222"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 
@@ -74,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:backgroundTint="#222222"
             android:text="儲存並套用" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
