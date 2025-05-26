@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "328755464597",
+    "project_id": "schoolapp-42641",
+    "storage_bucket": "schoolapp-42641.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328755464597:android:eae512802d1d7e25b54e9c",
+        "android_client_info": {
+          "package_name": "fcu.app.schoolApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByWR7M6XfVXmJoXTuSf7ydqktT_Pzaj-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

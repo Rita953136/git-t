@@ -1,0 +1,131 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+
+    <ImageButton
+        android:id="@+id/btnEditPrize2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/wheelView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="470dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="55dp"
+        android:layout_toStartOf="@+id/btnResetWheel"
+        android:background="@drawable/bg_circle_black"
+        android:backgroundTint="#222222"
+        android:paddingStart="24dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="8dp"
+        android:src="@drawable/density"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="98dp"
+        android:background="@drawable/bg_title_box"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        android:shape="rectangle"
+        android:text="今晚吃點什麼 ？"
+        android:textColor="#3D5AFE"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/wheelView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="124dp"
+        android:layout_marginBottom="10dp"
+        android:text="👉  ？？？ "
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
+    <fcu.app.schoolApp.LuckyWheelView
+        android:id="@+id/wheelView"
+        android:layout_width="363dp"
+        android:layout_height="429dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="146dp" />
+
+    <Button
+        android:id="@+id/btnResetWheel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/wheelView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="470dp"
+        android:layout_marginEnd="158dp"
+        android:layout_marginBottom="55dp"
+        android:backgroundTint="#222222"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
+        android:shape="rectangle"
+        android:text="還原轉盤"
+        android:textColor="#3D5AFE"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/btnEditPrize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/wheelView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="470dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="55dp"
+        android:background="@drawable/bg_circle_black"
+        android:backgroundTint="#222222"
+        android:paddingStart="24dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="8dp"
+        android:src="@drawable/edit"
+        android:textSize="15sp" />
+
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</RelativeLayout>
