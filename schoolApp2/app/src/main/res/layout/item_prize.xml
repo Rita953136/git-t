@@ -15,8 +15,8 @@
 
     <TextView
         android:id="@+id/textPrize"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="347dp"
+        android:layout_height="48dp"
         android:layout_weight="1"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />

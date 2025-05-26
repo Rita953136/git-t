@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true"
-    android:background="@color/black">
+    android:background="@drawable/bg_title_box">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
-            android:background="#222222"
+            android:background="#4B4848"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -36,10 +36,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="今晚吃點什麼？"
+                android:background="@drawable/radius"
                 android:inputType="text"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:background="@drawable/bg_title_box"/>
+                android:textSize="18sp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,11 +48,11 @@
 
             <EditText
                 android:id="@+id/inputPrize"
-                android:layout_width="0dp"
+                android:layout_width="263dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="#FFFFFF"
-                android:hint="New Item" />
+                android:hint="New Item"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/btnAddPrize"
@@ -60,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="新增"
                 android:backgroundTint="#222222"
+                android:textColor="@color/white"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 
@@ -76,6 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:backgroundTint="#222222"
+            android:textColor="@color/white"
             android:text="儲存並套用" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
