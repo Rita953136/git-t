@@ -87,7 +87,6 @@ public class HomeFragment extends Fragment {
                             loadPrizes(auth.getCurrentUser().getUid(), wheelView, loadingOverlay, titleText)
                     )
                     .addOnFailureListener(e -> {
-                        // 🔁 匿名登入失敗才 fallback 預設
                         loadedPrizes = Arrays.asList(defaultPrizes);
                         wheelView.setPrizes(defaultPrizes);
                         titleText.setText("今晚吃什麼？");
@@ -112,7 +111,7 @@ public class HomeFragment extends Fragment {
                         wheelView.setPrizes(currentPrizes.toArray(new String[0]));
                         loadedPrizes = currentPrizes;
 
-                        // ⬅️ 更新標題
+                        //更新標題
                         FirebaseUser userReload = FirebaseAuth.getInstance().getCurrentUser();
                         if (userReload != null) {
                             FirebaseFirestore.getInstance()

@@ -103,7 +103,6 @@ public class LuckyWheelView extends SurfaceView implements SurfaceHolder.Callbac
         Canvas canvas = holder.lockCanvas();
         if (canvas == null) return;
 
-        // 清除畫面避免破圖
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
         int w = getWidth(), h = getHeight();
@@ -121,7 +120,21 @@ public class LuckyWheelView extends SurfaceView implements SurfaceHolder.Callbac
         float startAngle = angle;
 
         paint.setAntiAlias(true);
-        paint.setTextSize(70);
+
+        int itemCount = prizes.length;
+        float textSize;
+
+        if (itemCount <= 6) {
+            textSize = 60f;
+        } else if (itemCount <= 10) {
+            textSize = 50f;
+        } else if (itemCount <= 15) {
+            textSize = 40f;
+        } else {
+            textSize = 32f;
+        }
+
+        paint.setTextSize(textSize);
         paint.setStyle(Paint.Style.FILL);
 
         for (int i = 0; i < prizes.length; i++) {
