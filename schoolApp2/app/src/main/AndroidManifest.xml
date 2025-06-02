@@ -25,9 +25,6 @@
         <activity android:name=".WheelActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".SelectGroupActivity" />
-        <activity android:name=".GroupSelectorAdapter" />
-
 
     </application>
 
