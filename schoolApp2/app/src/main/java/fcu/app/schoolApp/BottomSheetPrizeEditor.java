@@ -33,10 +33,12 @@ public class BottomSheetPrizeEditor extends BottomSheetDialogFragment {
     private OnPrizeSaveListener listener;
     private List<String> prizeList = new ArrayList<>();
     private PrizeListAdapter adapter;
+    private String groupId;
 
-    public BottomSheetPrizeEditor(List<String> initialList, OnPrizeSaveListener listener) {
+    public BottomSheetPrizeEditor(List<String> initialList, OnPrizeSaveListener listener, String groupId) {
         this.listener = listener;
         this.prizeList = new ArrayList<>(initialList);
+        this.groupId = groupId;
     }
 
     @Nullable
@@ -50,12 +52,11 @@ public class BottomSheetPrizeEditor extends BottomSheetDialogFragment {
         Button btnAdd = view.findViewById(R.id.btnAddPrize);
         Button btnSave = view.findViewById(R.id.btnSavePrize);
 
-        //初始化 RecyclerView
         adapter = new PrizeListAdapter(prizeList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-        // 新增項目
+        // 加入項目
         btnAdd.setOnClickListener(v -> {
             String newPrize = inputPrize.getText().toString().trim();
             if (!newPrize.isEmpty()) {
@@ -64,12 +65,14 @@ public class BottomSheetPrizeEditor extends BottomSheetDialogFragment {
                 inputPrize.setText("");
             }
         });
-        //載入現有 title（從 Firebase）
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
+        if (user != null && groupId != null) {
             FirebaseFirestore.getInstance()
                     .collection("users")
                     .document(user.getUid())
+                    .collection("groups")
+                    .document(groupId)
                     .get()
                     .addOnSuccessListener(snapshot -> {
                         if (snapshot.exists() && snapshot.contains("title")) {
@@ -78,21 +81,31 @@ public class BottomSheetPrizeEditor extends BottomSheetDialogFragment {
                     });
         }
 
-        //儲存按鈕：寫入 prizeList + title
+        // 儲存按鈕：寫入 prizeList + title
         btnSave.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onPrizeSaved(new ArrayList<>(prizeList));
             }
 
-            if (user != null) {
+            if (user != null && groupId != null) {
                 String title = inputTitle.getText().toString().trim();
                 Map<String, Object> data = new HashMap<>();
                 data.put("prizes", prizeList);
                 data.put("title", title);
+
                 FirebaseFirestore.getInstance()
                         .collection("users")
                         .document(user.getUid())
-                        .set(data, SetOptions.merge());
+                        .collection("groups")
+                        .document(groupId)
+                        .set(data, SetOptions.merge())
+                        .addOnSuccessListener(unused -> {
+                            Toast.makeText(getContext(), "已儲存", Toast.LENGTH_SHORT).show();
+                            dismiss();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getContext(), "儲存失敗：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
             } else {
                 dismiss();
             }
@@ -101,3 +114,4 @@ public class BottomSheetPrizeEditor extends BottomSheetDialogFragment {
         return view;
     }
 }
+

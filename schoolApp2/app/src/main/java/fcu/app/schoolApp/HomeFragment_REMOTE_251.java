@@ -101,7 +101,6 @@ public class HomeFragment extends Fragment {
                         }
                     })
                     .addOnFailureListener(e -> {
-                        // 🔁 匿名登入失敗才 fallback 預設
                         loadedPrizes = Arrays.asList(defaultPrizes);
                         wheelView.setPrizes(defaultPrizes);
                         titleText.setText("今晚吃什麼？");
@@ -119,28 +118,6 @@ public class HomeFragment extends Fragment {
             }
 
             BottomSheetPrizeEditor editor = new BottomSheetPrizeEditor(
-<<<<<<< HEAD
-                    new ArrayList<>(loadedPrizes),
-                    currentPrizes -> {
-                        wheelView.setPrizes(currentPrizes.toArray(new String[0]));
-                        loadedPrizes = currentPrizes;
-
-                        // ⬅️ 更新標題
-                        FirebaseUser userReload = FirebaseAuth.getInstance().getCurrentUser();
-                        if (userReload != null) {
-                            FirebaseFirestore.getInstance()
-                                    .collection("users")
-                                    .document(userReload.getUid())
-                                    .get()
-                                    .addOnSuccessListener(snapshot -> {
-                                        if (snapshot.exists() && snapshot.contains("title")) {
-                                            String newTitle = snapshot.getString("title");
-                                            titleText.setText(newTitle);
-                                        }
-                                    });
-                        }
-                    });
-=======
                     loadedPrizes,
                     updatedPrizes -> {
                         // 寫入已經由 editor 處理，這裡只更新本地即可
@@ -150,7 +127,6 @@ public class HomeFragment extends Fragment {
                     },
                     currentGroup // ✅ 新增參數 groupId
             );
->>>>>>> 9f51e4f (新增轉盤群組)
             editor.show(getParentFragmentManager(), editor.getTag());
 
         });
