@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
+    android:background="#000000"
     tools:context=".SignInActivity">
 
     <TextView
@@ -14,23 +15,61 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="156dp"
         android:text="登入帳號"
-        android:textSize="24sp"
+        android:textSize="26sp"
         android:textStyle="bold"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/et_signin_email"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Email"
+        android:textSize="18sp"
+        android:inputType="textEmailAddress"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#AAAAAA"
+        android:background="#222222"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLoginTitle" />
+
+    <EditText
+        android:id="@+id/et_signin_password"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="密碼"
+        android:textSize="18sp"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#AAAAAA"
+        android:background="#222222"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_signin_email" />
+
     <Button
         android:id="@+id/btn_signin"
+        style="@style/DarkButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="20dp"
         android:text="登入"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_signin_password" />
 
@@ -39,40 +78,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="尚未有帳號？點我註冊"
-
-        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textColor="#CCCCCC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_signin"
         app:layout_constraintVertical_bias="0.141" />
-
-    <EditText
-        android:id="@+id/et_signin_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:hint="密碼"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_signin_email" />
-
-    <EditText
-        android:id="@+id/et_signin_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="20dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLoginTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
