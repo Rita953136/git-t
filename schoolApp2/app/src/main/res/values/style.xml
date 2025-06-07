@@ -15,7 +15,9 @@
     <style name="DarkButton" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">#222222</item>
         <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">18sp</item> <!-- 加大字體 -->
     </style>
+
 
     <!-- 白色風格按鈕（可選） -->
     <style name="LightButton" parent="Widget.MaterialComponents.Button">
