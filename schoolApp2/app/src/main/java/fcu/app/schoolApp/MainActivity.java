@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         Fragment homeFragment = HomeFragment.newInstance("", "");
-        Fragment calenderFragment = CalenderFragment.newInstance("", "");
+        Fragment calenderFragment = new CalenderFragment();
+
         Fragment settingsFragment = SettingsFragment.newInstance("", "");
 
         setCurrentFragment(homeFragment);
