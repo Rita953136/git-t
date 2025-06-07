@@ -9,11 +9,11 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +29,7 @@ import java.util.Random;
 
 public class CalenderFragment extends Fragment {
 
+    private FrameLayout numberContainer;
     private ConstraintLayout rootLayout;
     private MaterialButton buttonStart, buttonSetting;
     private Handler handler = new Handler();
@@ -46,6 +47,7 @@ public class CalenderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_calender, container, false);
 
         rootLayout = view.findViewById(R.id.layout_root);
+        numberContainer = view.findViewById(R.id.number_container);
         buttonStart = view.findViewById(R.id.button_start);
         buttonSetting = view.findViewById(R.id.button_setting);
 
@@ -55,21 +57,13 @@ public class CalenderFragment extends Fragment {
 
         buttonSetting.setOnClickListener(v -> openSettingDialog());
 
-        // ✅ 修正這裡的錯誤用法：改為使用匿名 listener
-        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                previewNumberViews(count);
-            }
-        });
+        view.post(() -> previewNumberViews(count));
 
         return view;
     }
 
     private void startRandomAnimation(int targetCount) {
         isAnimating = true;
-
         Random random = new Random();
         long startTime = System.currentTimeMillis();
 
@@ -101,26 +95,22 @@ public class CalenderFragment extends Fragment {
     }
 
     private void previewNumberViews(int previewCount) {
-        for (View v : previewViews) rootLayout.removeView(v);
+        numberContainer.removeAllViews();
         previewViews.clear();
 
-        int screenHeight = rootLayout.getHeight();
-        int reservedHeight = buttonStart.getHeight() + buttonSetting.getHeight() + 120 + 100;
-        int availableHeight = screenHeight - reservedHeight;
+        int containerHeight = numberContainer.getHeight();
+        int availableHeight = containerHeight - 40;
         if (availableHeight <= 0) availableHeight = 1000;
 
         if (previewCount == 1) {
             CardView card = createCardView();
-            ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 160);
-            lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-            lp.bottomToTop = buttonSetting.getId();
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, 180);
             lp.topMargin = 100;
-            lp.bottomMargin = 60;
             lp.leftMargin = 40;
             lp.rightMargin = 40;
             card.setLayoutParams(lp);
-            rootLayout.addView(card);
+            numberContainer.addView(card);
             previewViews.add(card);
         } else {
             int columns = (previewCount > 5) ? 2 : 1;
@@ -129,19 +119,13 @@ public class CalenderFragment extends Fragment {
 
             for (int i = 0; i < previewCount; i++) {
                 CardView card = createCardView();
-                ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(
-                        0, heightPerItem);
-                lp.leftMargin = 20;
-                lp.rightMargin = 20;
-                lp.topMargin = 20;
-                lp.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-                lp.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
-
+                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT, heightPerItem - 20);
+                lp.topMargin = (i % rows) * heightPerItem + 20;
+                lp.leftMargin = (columns == 2 && i / rows == 1) ? rootLayout.getWidth() / 2 + 10 : 40;
+                lp.rightMargin = 40;
                 card.setLayoutParams(lp);
-                card.setY(80 + (i % rows) * (heightPerItem + 20));
-                card.setX((i / rows == 0) ? 40 : rootLayout.getWidth() / 2f + 10);
-
-                rootLayout.addView(card);
+                numberContainer.addView(card);
                 previewViews.add(card);
             }
         }
