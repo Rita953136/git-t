@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App 主題：黑色背景搭配白色 Accent -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- 主要顏色配置 -->
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="android:windowBackground">#000000</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <!-- 黑色風格按鈕 -->
+    <style name="DarkButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">#222222</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <!-- 白色風格按鈕（可選） -->
+    <style name="LightButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">#FFFFFF</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+</resources>

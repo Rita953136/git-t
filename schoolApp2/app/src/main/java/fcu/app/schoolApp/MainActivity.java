@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment homeFragment = HomeFragment.newInstance("", "");
         Fragment calenderFragment = new CalenderFragment();
 
-        Fragment settingsFragment = SettingsFragment.newInstance("", "");
+        Fragment settingsFragment = new SettingsFragment();
 
         setCurrentFragment(homeFragment);
 
