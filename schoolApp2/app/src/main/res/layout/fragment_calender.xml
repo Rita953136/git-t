@@ -8,6 +8,16 @@
     android:background="#121212"
     android:padding="24dp"
     tools:context=".CalenderFragment">
+    <FrameLayout
+        android:id="@+id/number_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_setting"
