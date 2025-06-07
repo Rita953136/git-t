@@ -199,8 +199,8 @@ public class CalenderFragment extends Fragment {
                 int newMax = Integer.parseInt(inputMax.getText().toString());
                 int newCount = Integer.parseInt(inputCount.getText().toString());
 
-                if (newMin >= newMax || newCount <= 0 || newCount > 10) {
-                    Toast.makeText(getContext(), "請輸入有效數值（最大值需大於最小值，組數1~10）", Toast.LENGTH_SHORT).show();
+                if (newMin >= newMax || newCount <= 0 || newCount > 5) {
+                    Toast.makeText(getContext(), "請輸入有效數值（最大值需大於最小值，組數1~5）", Toast.LENGTH_SHORT).show();
                 } else {
                     min = newMin;
                     max = newMax;
