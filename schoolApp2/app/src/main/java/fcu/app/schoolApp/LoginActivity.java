@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
         spannable.setSpan(clickableSpan, 6, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvGoLogin.setText(spannable);
         tvGoLogin.setMovementMethod(LinkMovementMethod.getInstance());
-        1
+
         SpannableString forgotSpan = new SpannableString("忘記密碼？");
         ClickableSpan forgotClickable = new ClickableSpan() {
             @Override

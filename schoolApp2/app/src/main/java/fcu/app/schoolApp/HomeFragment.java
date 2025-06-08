@@ -101,13 +101,17 @@ public class HomeFragment extends Fragment {
                 resultText.setText("👉 " + currentPrize);
                 resetButton.setEnabled(false);
                 editPrizeButton.setEnabled(false);
+                groupButton.setEnabled(false);
                 resetButton.setAlpha(0.3f);
                 editPrizeButton.setAlpha(0.3f);
+                groupButton.setAlpha(0.3f);
             } else {
                 resetButton.setEnabled(true);
                 editPrizeButton.setEnabled(true);
+                groupButton.setEnabled(true);
                 resetButton.setAlpha(1f);
                 editPrizeButton.setAlpha(1f);
+                groupButton.setAlpha(1f);
             }
         });
 

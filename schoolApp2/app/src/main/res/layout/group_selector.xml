@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#121212">
+    android:background="@drawable/bg_title_box">>
 
     <TextView
         android:id="@+id/textSelectGroup"
@@ -34,5 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="新增群組"
+        android:textColor="@color/white"
+        android:backgroundTint="#222222"
         android:layout_marginTop="12dp" />
 </LinearLayout>
