@@ -1,14 +1,17 @@
 package fcu.app.schoolApp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +20,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -67,7 +73,6 @@ public class HomeFragment extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
 
-        // 群組切換回傳
         selectGroupLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -134,19 +139,22 @@ public class HomeFragment extends Fragment {
 
             BottomSheetPrizeEditor editor = new BottomSheetPrizeEditor(
                     loadedPrizes,
-                    updatedPrizes -> {
-                        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                        if (currentUser != null) {
+                    titleText.getText().toString(), // 傳入當前 title（你可加參數進 constructor）
+                    (updatedTitle, updatedPrizes) -> {
+                        if (user != null) {
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("title", updatedTitle);
+                            data.put("prizes", updatedPrizes);
+
                             FirebaseFirestore.getInstance()
                                     .collection("users")
-                                    .document(currentUser.getUid())
-                                    .collection("groups")  // ✅ 改為正確 collection
+                                    .document(user.getUid())
+                                    .collection("groups")
                                     .document(currentGroup)
-                                    .set(Collections.singletonMap("prizes", updatedPrizes), SetOptions.merge())
+                                    .set(data, SetOptions.merge())
                                     .addOnSuccessListener(unused -> {
-                                        loadedPrizes = updatedPrizes;
-                                        wheelView.setPrizes(loadedPrizes.toArray(new String[0]));
-                                        Toast.makeText(getContext(), "已更新獎項", Toast.LENGTH_SHORT).show();
+                                        // UI 更新
+                                        loadPrizes(user.getUid(), currentGroup, wheelView, loadingOverlay, titleText);
                                     })
                                     .addOnFailureListener(e -> {
                                         Toast.makeText(getContext(), "更新失敗：" + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -155,12 +163,133 @@ public class HomeFragment extends Fragment {
                     }
             );
             editor.show(getParentFragmentManager(), editor.getTag());
+
         });
 
         groupButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), SelectGroupActivity.class);
-            selectGroupLauncher.launch(intent);
+            View sheetView = LayoutInflater.from(getContext()).inflate(R.layout.group_selector, null);
+            BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+            dialog.setContentView(sheetView);
+
+            RecyclerView recyclerView = sheetView.findViewById(R.id.recyclerGroupList);
+            ProgressBar progressBar = sheetView.findViewById(R.id.progressBar);
+
+            List<GroupSelectorAdapter.GroupItem> groupList = new ArrayList<>();
+
+            GroupSelectorAdapter adapter = new GroupSelectorAdapter(groupList, groupId -> {
+                currentGroup = groupId;
+                FirebaseUser users = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    loadPrizes(user.getUid(), currentGroup, wheelView, loadingOverlay, titleText);
+                }
+                dialog.dismiss();
+            });
+            adapter.setOnGroupDeleteListener(groupId -> {
+                if (groupList.size() <= 1) {
+                    Toast.makeText(getContext(), "至少要保留一個群組", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                new AlertDialog.Builder(getContext())
+                        .setTitle("確認刪除")
+                        .setMessage("是否刪除此群組？")
+                        .setPositiveButton("刪除", (d, w) -> {
+                            FirebaseUser users = FirebaseAuth.getInstance().getCurrentUser();
+                            if (user != null) {
+                                FirebaseFirestore.getInstance()
+                                        .collection("users")
+                                        .document(user.getUid())
+                                        .collection("groups")
+                                        .document(groupId)
+                                        .delete()
+                                        .addOnSuccessListener(unused -> {
+                                            Toast.makeText(getContext(), "群組已刪除", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                            groupButton.performClick(); // 重新打開 BottomSheet 以刷新列表
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(getContext(), "刪除失敗：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
+            });
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(adapter);
+
+            FirebaseUser users = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                FirebaseFirestore.getInstance()
+                        .collection("users")
+                        .document(user.getUid())
+                        .collection("groups")
+                        .get()
+                        .addOnSuccessListener(querySnapshot -> {
+                            groupList.clear();
+                            for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                                String groupId = doc.getId();
+                                String title = doc.getString("title");
+                                List<?> prizes = (List<?>) doc.get("prizes");
+                                int count = prizes != null ? prizes.size() : 0;
+                                groupList.add(new GroupSelectorAdapter.GroupItem(groupId, title, count));
+                            }
+                            adapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getContext(), "載入失敗：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        });
+            }
+            Button btnAddGroup = sheetView.findViewById(R.id.btnAddGroup);
+            btnAddGroup.setOnClickListener(view1 -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("新增群組");
+
+                final EditText input = new EditText(getContext());
+                input.setHint("輸入群組名稱");
+                builder.setView(input);
+
+                builder.setPositiveButton("新增", (dialogInterface, i) -> {
+                    String title = input.getText().toString().trim();
+                    if (!title.isEmpty()) {
+                        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                        if (currentUser != null) {
+                            String groupId = UUID.randomUUID().toString();
+
+                            Map<String, Object> newGroup = new HashMap<>();
+                            newGroup.put("title", title);
+                            newGroup.put("prizes", Arrays.asList("項目1", "項目2", "項目3"));
+
+                            FirebaseFirestore.getInstance()
+                                    .collection("users")
+                                    .document(currentUser.getUid())
+                                    .collection("groups")
+                                    .document(groupId)
+                                    .set(newGroup)
+                                    .addOnSuccessListener(unused -> {
+                                        Toast.makeText(getContext(), "已新增群組", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                        groupButton.performClick(); // 重新打開 BottomSheet 以刷新
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(getContext(), "新增失敗：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "請輸入群組名稱", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                builder.setNegativeButton("取消", null);
+                builder.show();
+            });
+
+            dialog.show();
         });
+
 
         return view;
     }

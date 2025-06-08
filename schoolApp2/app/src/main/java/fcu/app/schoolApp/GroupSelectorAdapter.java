@@ -3,6 +3,7 @@ package fcu.app.schoolApp;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,16 @@ public class GroupSelectorAdapter extends RecyclerView.Adapter<GroupSelectorAdap
 
     public interface OnGroupSelectedListener {
         void onGroupSelected(String groupId);
+    }
+
+    public interface OnGroupDeleteListener {
+        void onDelete(String groupId);
+    }
+
+    private OnGroupDeleteListener deleteListener;
+
+    public void setOnGroupDeleteListener(OnGroupDeleteListener listener) {
+        this.deleteListener = listener;
     }
 
     public static class GroupItem {
@@ -38,11 +49,13 @@ public class GroupSelectorAdapter extends RecyclerView.Adapter<GroupSelectorAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textGroupName, textOptionCount;
+        ImageButton btnDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textGroupName = itemView.findViewById(R.id.textGroupName);
             textOptionCount = itemView.findViewById(R.id.textOptionCount);
+            btnDelete = itemView.findViewById(R.id.btnDelete);
         }
 
         public void bind(GroupItem item) {
@@ -50,6 +63,12 @@ public class GroupSelectorAdapter extends RecyclerView.Adapter<GroupSelectorAdap
             textOptionCount.setText("共 " + item.optionCount + " 項");
 
             itemView.setOnClickListener(v -> listener.onGroupSelected(item.groupId));
+
+            btnDelete.setOnClickListener(v -> {
+                if (deleteListener != null) {
+                    deleteListener.onDelete(item.groupId);
+                }
+            });
         }
     }
 

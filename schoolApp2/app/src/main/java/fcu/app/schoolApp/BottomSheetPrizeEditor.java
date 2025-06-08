@@ -25,18 +25,17 @@ import java.util.List;
 import java.util.Map;
 
 public class BottomSheetPrizeEditor extends BottomSheetDialogFragment {
-
     public interface OnPrizeSaveListener {
-        void onPrizeSaved(List<String> currentPrizes);
+        void onPrizeSaved(String updatedTitle, List<String> updatedPrizes);
     }
-
     private OnPrizeSaveListener listener;
     private List<String> prizeList = new ArrayList<>();
     private PrizeListAdapter adapter;
-
-    public BottomSheetPrizeEditor(List<String> initialList, OnPrizeSaveListener listener) {
+    private String currentTitle;
+    public BottomSheetPrizeEditor(List<String> initialList, String currentTitle, OnPrizeSaveListener listener) {
         this.listener = listener;
         this.prizeList = new ArrayList<>(initialList);
+        this.currentTitle = currentTitle;
     }
 
     @Nullable
@@ -47,6 +46,7 @@ public class BottomSheetPrizeEditor extends BottomSheetDialogFragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerPrize);
         EditText inputPrize = view.findViewById(R.id.inputPrize);
         EditText inputTitle = view.findViewById(R.id.inputTitle);
+        inputTitle.setText(currentTitle);
         Button btnAdd = view.findViewById(R.id.btnAddPrize);
         Button btnSave = view.findViewById(R.id.btnSavePrize);
 
@@ -80,23 +80,20 @@ public class BottomSheetPrizeEditor extends BottomSheetDialogFragment {
 
         //儲存按鈕：寫入 prizeList + title
         btnSave.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onPrizeSaved(new ArrayList<>(prizeList));
+            String title = inputTitle.getText().toString().trim();
+
+            if (title.isEmpty()) {
+                Toast.makeText(getContext(), "標題不能為空", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            if (user != null) {
-                String title = inputTitle.getText().toString().trim();
-                Map<String, Object> data = new HashMap<>();
-                data.put("prizes", prizeList);
-                data.put("title", title);
-                FirebaseFirestore.getInstance()
-                        .collection("users")
-                        .document(user.getUid())
-                        .set(data, SetOptions.merge());
-            } else {
-                dismiss();
+            if (listener != null) {
+                listener.onPrizeSaved(title, new ArrayList<>(prizeList));
             }
+
+            dismiss(); // 關閉 BottomSheet
         });
+
 
         return view;
     }

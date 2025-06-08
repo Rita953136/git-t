@@ -10,7 +10,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?android:selectableItemBackgroundBorderless"
-        android:contentDescription="刪除"
+        android:contentDescription="刪除項目"
         android:src="@android:drawable/ic_menu_delete" />
 
     <TextView
