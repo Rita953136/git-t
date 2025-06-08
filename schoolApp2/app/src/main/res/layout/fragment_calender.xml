@@ -19,6 +19,23 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
 
+    <ImageButton
+        android:id="@+id/button_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_circle_black"
+        android:backgroundTint="#222222"
+        android:paddingStart="24dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="8dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_start" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_setting"
         android:layout_width="0dp"
@@ -27,7 +44,7 @@
         android:layout_marginEnd="120dp"
         android:layout_marginBottom="20dp"
         android:text="設定範圍"
-        android:textColor="#FFFFFF"
+        android:textColor="#3D5AFE"
         app:backgroundTint="#1F1F1F"
         app:cornerRadius="24dp"
         app:layout_constraintBottom_toTopOf="@+id/button_start"
@@ -41,11 +58,11 @@
         android:layout_marginStart="120dp"
         android:layout_marginEnd="120dp"
         android:text="開始"
-        android:textColor="#2196F3"
-        app:backgroundTint="#F0F0F0"
+        android:textColor="#3D5AFE"
+        app:backgroundTint="#222222"
         app:cornerRadius="24dp"
-        app:strokeColor="#2196F3"
-        app:strokeWidth="2dp"
+
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

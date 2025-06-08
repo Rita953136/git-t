@@ -1,4 +1,5 @@
 package fcu.app.schoolApp;
+import android.widget.LinearLayout;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
+
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import java.util.List;
 import java.util.Random;
 
 public class CalenderFragment extends Fragment {
+    private List<List<Integer>> historyRecords = new ArrayList<>();
 
     private FrameLayout numberContainer;
     private ConstraintLayout rootLayout;
@@ -45,6 +49,8 @@ public class CalenderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calender, container, false);
+        ImageButton btnHistory = view.findViewById(R.id.button_history);
+        btnHistory.setOnClickListener(v -> showHistoryDialog());
 
         rootLayout = view.findViewById(R.id.layout_root);
         numberContainer = view.findViewById(R.id.number_container);
@@ -88,6 +94,13 @@ public class CalenderFragment extends Fragment {
                         int finalNum = random.nextInt(max - min + 1) + min;
                         tv.setText(String.valueOf(finalNum));
                     }
+                    List<Integer> currentResult = new ArrayList<>();
+                    for (View view : previewViews) {
+                        TextView tv = (TextView) ((CardView) view).getChildAt(0);
+                        currentResult.add(Integer.parseInt(tv.getText().toString()));
+                    }
+                    historyRecords.add(currentResult);
+
                     isAnimating = false;
                 }
             }
@@ -130,6 +143,37 @@ public class CalenderFragment extends Fragment {
             }
         }
     }
+    private void showHistoryDialog() {
+        Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_history); // ⬅️ 等下我們會做這個 XML
+
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+            WindowManager.LayoutParams wlp = window.getAttributes();
+            wlp.gravity = Gravity.BOTTOM;
+            window.setAttributes(wlp);
+        }
+
+        LinearLayout historyContainer = dialog.findViewById(R.id.history_container);
+        historyContainer.removeAllViews();
+
+        int count = 1;
+        for (List<Integer> record : historyRecords) {
+            TextView tv = new TextView(getContext());
+            tv.setText(count + ". " + record.toString().replace("[", "").replace("]", ""));
+            tv.setTextColor(Color.WHITE);
+            tv.setTextSize(18);
+            tv.setPadding(16, 12, 16, 12);
+            historyContainer.addView(tv);
+            count++;
+        }
+
+        dialog.show();
+    }
+
 
     private CardView createCardView() {
         CardView card = new CardView(getContext());
