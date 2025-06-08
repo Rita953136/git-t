@@ -41,7 +41,7 @@
         android:id="@+id/editCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="產生幾組（最多10）"
+        android:hint="產生幾組（最多5）"
         android:inputType="number"
         android:padding="12dp"
         android:layout_marginTop="12dp"

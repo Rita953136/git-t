@@ -11,5 +11,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="24dp">
+
+        <!-- 新增的標題 -->
+        <TextView
+            android:id="@+id/history_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="歷史紀錄"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:paddingBottom="16dp" />
+
+        <!-- 這邊原本是放歷史項目的容器，仍然保留其他 TextView 將動態加入 -->
+
     </LinearLayout>
 </ScrollView>
